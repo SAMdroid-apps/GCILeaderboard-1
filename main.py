@@ -115,8 +115,9 @@ def update():
     return redirect('/index')
 
 
-@app.route('/student/<name>-count=<int:e>-org=<org>')
-def student(name, e=0, org=None):
+@app.route('/student/<name>', defaults={'org': u'All Organizations'})
+@app.route('/student/<name>/<org>')
+def student(name, org=u'All'):
     tasks = []
     code = 0
     interface = 0
@@ -125,9 +126,7 @@ def student(name, e=0, org=None):
     research = 0
     total = 0
 
-    isAll = False
-    if u'All' in org:
-        isAll = True
+    isAll = u'All' in org
 
     for orgname in orglist:
         page_json_f = open("orgs/%s.json" % orgname, "r")
